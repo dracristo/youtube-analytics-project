@@ -9,7 +9,7 @@ class Channel:
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализирует id канала. Дальше все данные будут подтягиваться по API."""
-        self.channel_id = channel_id
+        self._channel_id = channel_id
         stats = self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
         self.title = stats['items'][0]['snippet']['title']
         self.channel_description = stats['items'][0]['snippet']['description']
@@ -17,6 +17,10 @@ class Channel:
         self.subscriberCount = stats['items'][0]['statistics']['subscriberCount']
         self.video_count = stats['items'][0]['statistics']['videoCount']
         self.viewCount = stats['items'][0]['statistics']['viewCount']
+
+    @property
+    def channel_id(self) -> str:
+        return self._channel_id
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
